@@ -1,0 +1,8 @@
+todo-api/node_modules
+todo-api/.env
+todo-api/*.db
+todo-api/*.db-journal
+
+todo-frontend/node_modules
+todo-frontend/.env*
+todo-frontend/dist
