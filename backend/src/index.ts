@@ -3,6 +3,15 @@ import cors from "cors";
 import { PrismaClient } from "@prisma/client";
 import { hash, compare } from "bcrypt";
 import jwt from "jsonwebtoken";
+import { Request, Response, NextFunction } from "express";
+
+import * as dotenv from "dotenv";
+dotenv.config();
+
+const JWT_SECRET = process.env.JWT_SECRET;
+if (!JWT_SECRET) {
+  throw new Error("JWT_SECRET is not defined in .env file");
+}
 
 const app = express();
 const prisma = new PrismaClient();
@@ -60,7 +69,6 @@ app.post("/api/login", async (req, res) => {
       return res.status(401).json({ message: "Invalid email or password" });
     }
 
-    const JWT_SECRET = "your-super-secret-key";
     const token = jwt.sign({ userId: user.id, email: user.email }, JWT_SECRET, {
       expiresIn: "1h",
     });
@@ -72,13 +80,9 @@ app.post("/api/login", async (req, res) => {
   }
 });
 
-import { Request, Response, NextFunction } from "express";
-
 interface AuthRequest extends Request {
   user?: { userId: number; email: string };
 }
-
-const JWT_SECRET = "your-super-secret-key";
 
 const authenticateToken = (
   req: AuthRequest,
