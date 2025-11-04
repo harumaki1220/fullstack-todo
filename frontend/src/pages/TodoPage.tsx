@@ -10,6 +10,7 @@ interface Todo {
 
 const TodoPage = () => {
   const [todos, setTodos] = useState<Todo[]>([]);
+  const [newTitle, setNewTitle] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -39,7 +40,33 @@ const TodoPage = () => {
     };
 
     fetchTodos();
-  }, []);
+  }, [navigate]);
+
+  const handleCreateTodo = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (!newTitle) return;
+
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        navigate("/login");
+        return;
+      }
+
+      const response = await axios.post(
+        "http://localhost:3000/api/todos",
+        { title: newTitle },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      const newTodo = response.data;
+      setTodos((currentTodos) => [...currentTodos, newTodo]);
+      setNewTitle("");
+    } catch (error) {
+      console.error("TODOの作成に失敗:", error);
+    }
+  };
 
   return (
     <div>
@@ -52,6 +79,14 @@ const TodoPage = () => {
           </li>
         ))}
       </ul>
+      <form onSubmit={handleCreateTodo}>
+        <input
+          value={newTitle}
+          onChange={(e) => setNewTitle(e.target.value)}
+          placeholder="新しいTODOを入力"
+        />
+        <button type="submit">追加</button>
+      </form>
       {todos.length === 0 && <p>（まだTODOはありません）</p>}
     </div>
   );
