@@ -1,12 +1,25 @@
 import React, { useState } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log("ログイン試行:", { email, password });
+    try {
+      const response = await axios.post("http://localhost:3000/api/login", {
+        email: email,
+        password: password,
+      });
+      localStorage.setItem("token", response.data.token);
+      navigate("/");
+    } catch (error) {
+      console.error("ログイン失敗:", error);
+      alert("メールアドレスまたはパスワードが間違っています");
+    }
   };
 
   return (
