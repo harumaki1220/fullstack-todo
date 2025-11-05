@@ -68,12 +68,33 @@ const TodoPage = () => {
     }
   };
 
+  const handleToggle = async (todo: Todo) => {
+    try {
+      const token = localStorage.getItem("token");
+      const newCompletedStatus = !todo.completed;
+      const response = await axios.put(
+        `http://localhost:3000/api/todos/${todo.id}`,
+        {
+          title: todo.title,
+          completed: newCompletedStatus,
+        },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      const updatedTodo = response.data;
+      setTodos((currentTodos) =>
+        currentTodos.map((t) => (t.id === updatedTodo.id ? updatedTodo : t))
+      );
+    } catch (error) {
+      console.error("更新に失敗:", error);
+    }
+  };
+
   return (
     <div>
       <h2>あなたのTODOリスト</h2>
       <ul>
         {todos.map((todo) => (
-          <li key={todo.id}>
+          <li key={todo.id} onClick={() => handleToggle(todo)}>
             {todo.title}
             {todo.completed ? "(完了)" : "(未完了)"}
           </li>
