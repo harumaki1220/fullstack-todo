@@ -2,32 +2,33 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 
-const LoginPage = () => {
+const RegisterPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
+  const API_URL = "https://fullstack-todo-hajg.onrender.com";
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
-      const response = await axios.post(
-        "https://fullstack-todo-hajg.onrender.com/api/login",
-        {
-          email: email,
-          password: password,
-        }
-      );
-      localStorage.setItem("token", response.data.token);
-      navigate("/");
+      await axios.post(`${API_URL}/api/register`, { email, password });
+
+      alert("登録が成功しました！ログインページに移動します。");
+      navigate("/login");
     } catch (error) {
-      console.error("ログイン失敗:", error);
-      alert("メールアドレスまたはパスワードが間違っています");
+      console.error("登録に失敗:", error);
+      if (axios.isAxiosError(error) && error.response?.status === 409) {
+        alert("そのメールアドレスは既に使用されています。");
+      } else {
+        alert("登録に失敗しました。");
+      }
     }
   };
 
   return (
     <div>
-      <h2>ログイン</h2>
+      <h2>新規登録</h2>
       <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="email">Eメール:</label>
@@ -49,14 +50,13 @@ const LoginPage = () => {
             required
           />
         </div>
-        <button type="submit">ログイン</button>
+        <button type="submit">登録する</button>
       </form>
       <p>
-        アカウントをお持ちではありませんか？{" "}
-        <Link to="/register">新規登録</Link>
+        アカウントを既にお持ちですか？ <Link to="/login">ログイン</Link>
       </p>
     </div>
   );
 };
 
-export default LoginPage;
+export default RegisterPage;
