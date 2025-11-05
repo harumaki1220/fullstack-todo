@@ -89,6 +89,21 @@ const TodoPage = () => {
     }
   };
 
+  const handleDelete = async (id: number) => {
+    if (!window.confirm("本当に削除しますか？")) return;
+
+    try {
+      const token = localStorage.getItem("token");
+
+      await axios.delete(`http://localhost:3000/api/todos/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setTodos((currentTodos) => currentTodos.filter((t) => t.id !== id));
+    } catch (error) {
+      console.error("削除に失敗", error);
+    }
+  };
+
   return (
     <div>
       <h2>あなたのTODOリスト</h2>
@@ -97,6 +112,14 @@ const TodoPage = () => {
           <li key={todo.id} onClick={() => handleToggle(todo)}>
             {todo.title}
             {todo.completed ? "(完了)" : "(未完了)"}
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                handleDelete(todo.id);
+              }}
+            >
+              削除
+            </button>
           </li>
         ))}
       </ul>
