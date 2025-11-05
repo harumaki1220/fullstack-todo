@@ -23,12 +23,12 @@
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
     "pg": "^8.16.3",
-    "typescript": "^5.9.3"
-  },
-  "devDependencies": {
+    "typescript": "^5.9.3",
     "@types/express": "^5.0.5",
     "@types/node": "^24.9.1",
-    "prisma": "^6.18.0",
+    "prisma": "^6.18.0"
+  },
+  "devDependencies": {
     "tsx": "^4.20.6"
   }
 }
