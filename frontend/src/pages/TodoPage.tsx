@@ -22,20 +22,23 @@ const TodoPage = () => {
           return;
         }
 
-        const response = await axios.get("http://localhost:3000/api/todos", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await axios.get(
+          "https://fullstack-todo-hajg.onrender.com/api/todos",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
         setTodos(response.data);
       } catch (error) {
         console.error("TODOリストの取得に失敗:", error);
-        //   if (
-        //     axios.isAxiosError(error) &&
-        //     (error.response?.status === 401 || error.response?.status === 403)
-        //   ) {
-        //     navigate("/login");
-        //   }
+        if (
+          axios.isAxiosError(error) &&
+          (error.response?.status === 401 || error.response?.status === 403)
+        ) {
+          navigate("/login");
+        }
       }
     };
 
@@ -54,7 +57,7 @@ const TodoPage = () => {
       }
 
       const response = await axios.post(
-        "http://localhost:3000/api/todos",
+        "https://fullstack-todo-hajg.onrender.com/api/todos",
         { title: newTitle },
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -73,7 +76,7 @@ const TodoPage = () => {
       const token = localStorage.getItem("token");
       const newCompletedStatus = !todo.completed;
       const response = await axios.put(
-        `http://localhost:3000/api/todos/${todo.id}`,
+        `https://fullstack-todo-hajg.onrender.com/api/todos/${todo.id}`,
         {
           title: todo.title,
           completed: newCompletedStatus,
@@ -95,9 +98,12 @@ const TodoPage = () => {
     try {
       const token = localStorage.getItem("token");
 
-      await axios.delete(`http://localhost:3000/api/todos/${id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      await axios.delete(
+        `https://fullstack-todo-hajg.onrender.com/api/todos/${id}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
       setTodos((currentTodos) => currentTodos.filter((t) => t.id !== id));
     } catch (error) {
       console.error("削除に失敗", error);

@@ -10,10 +10,13 @@ const LoginPage = () => {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
-      const response = await axios.post("http://localhost:3000/api/login", {
-        email: email,
-        password: password,
-      });
+      const response = await axios.post(
+        "https://fullstack-todo-hajg.onrender.com/api/login",
+        {
+          email: email,
+          password: password,
+        }
+      );
       localStorage.setItem("token", response.data.token);
       navigate("/");
     } catch (error) {
