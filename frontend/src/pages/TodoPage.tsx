@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import api from "../api";
 import { useNavigate } from "react-router-dom";
 
 interface Todo {
@@ -7,8 +7,6 @@ interface Todo {
   title: string;
   completed: boolean;
 }
-
-const API_URL = import.meta.env.VITE_API_URL;
 
 const TodoPage = () => {
   const [todos, setTodos] = useState<Todo[]>([]);
@@ -18,29 +16,12 @@ const TodoPage = () => {
   useEffect(() => {
     const fetchTodos = async () => {
       try {
-        const token = localStorage.getItem("token");
-        if (!token) {
-          navigate("/login");
-          return;
-        }
-
-        const response = await axios.get(`${API_URL}/api/todos`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await api.get("/api/todos");
         setTodos(response.data);
       } catch (error) {
         console.error("TODOリストの取得に失敗:", error);
-        if (
-          axios.isAxiosError(error) &&
-          (error.response?.status === 401 || error.response?.status === 403)
-        ) {
-          navigate("/login");
-        }
       }
     };
-
     fetchTodos();
   }, [navigate]);
 
@@ -56,19 +37,7 @@ const TodoPage = () => {
     if (!newTitle) return;
 
     try {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        navigate("/login");
-        return;
-      }
-
-      const response = await axios.post(
-        `${API_URL}/api/todos`,
-        { title: newTitle },
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      const response = await api.post("/api/todos", { title: newTitle });
       const newTodo = response.data;
       setTodos((currentTodos) => [...currentTodos, newTodo]);
       setNewTitle("");
@@ -79,16 +48,11 @@ const TodoPage = () => {
 
   const handleToggle = async (todo: Todo) => {
     try {
-      const token = localStorage.getItem("token");
       const newCompletedStatus = !todo.completed;
-      const response = await axios.put(
-        `${API_URL}/api/todos/${todo.id}`,
-        {
-          title: todo.title,
-          completed: newCompletedStatus,
-        },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+      const response = await api.put(`/api/todos/${todo.id}`, {
+        title: todo.title,
+        completed: newCompletedStatus,
+      });
       const updatedTodo = response.data;
       setTodos((currentTodos) =>
         currentTodos.map((t) => (t.id === updatedTodo.id ? updatedTodo : t))
@@ -102,11 +66,7 @@ const TodoPage = () => {
     if (!window.confirm("本当に削除しますか？")) return;
 
     try {
-      const token = localStorage.getItem("token");
-
-      await axios.delete(`${API_URL}/api/todos/${id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      await api.delete(`/api/todos/${id}`, {});
       setTodos((currentTodos) => currentTodos.filter((t) => t.id !== id));
     } catch (error) {
       console.error("削除に失敗", error);
