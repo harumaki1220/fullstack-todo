@@ -1,0 +1,102 @@
+.container {
+  width: 100%;
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e0e0e0;
+}
+
+.logoutButton {
+  float: right;
+  background-color: #ffaaaa;
+  color: #333;
+  border: none;
+  border-radius: 4px;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+}
+.logoutButton:hover {
+  background-color: #f79494;
+}
+
+.title {
+  clear: both;
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+}
+
+.list {
+  list-style: none;
+  margin-bottom: 2rem;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  padding: 1rem 0.5rem;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+.item:hover {
+  background-color: #f9f9f9;
+}
+
+.itemText {
+  flex-grow: 1;
+  margin-right: 1rem;
+}
+
+.itemTextCompleted {
+  text-decoration: line-through;
+  color: #999;
+}
+
+.deleteButton {
+  background-color: #ddd;
+  color: #555;
+  border: none;
+  border-radius: 4px;
+  padding: 0.4rem 0.8rem;
+  font-size: 0.9em;
+  cursor: pointer;
+}
+.deleteButton:hover {
+  background-color: #ccc;
+}
+
+.form {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.input {
+  flex-grow: 1;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.addButton {
+  padding: 0 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #ffffff;
+  background-color: #646cff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.addButton:hover {
+  background-color: #535bf2;
+}
+
+.emptyMessage {
+  text-align: center;
+  color: #888;
+}

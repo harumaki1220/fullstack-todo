@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import api from "../api";
 import { useNavigate } from "react-router-dom";
+import styles from "./TodoPage.module.css";
 
 interface Todo {
   id: number;
@@ -74,39 +75,53 @@ const TodoPage = () => {
   };
 
   return (
-    <div>
-      <button
-        onClick={handleLogout}
-        style={{ float: "right", backgroundColor: "#ffaaaa" }}
-      >
+    <div className={styles.container}>
+      <button onClick={handleLogout} className={styles.logoutButton}>
         ログアウト
       </button>
-      <h2>あなたのTODOリスト</h2>
-      <ul>
+      <h2 className={styles.title}>あなたのTODOリスト</h2>
+      <ul className={styles.list}>
         {todos.map((todo) => (
-          <li key={todo.id} onClick={() => handleToggle(todo)}>
-            {todo.title}
-            {todo.completed ? "(完了)" : "(未完了)"}
+          <li
+            key={todo.id}
+            onClick={() => handleToggle(todo)}
+            className={styles.item}
+          >
+            <span
+              className={`
+                ${styles.itemText} 
+                ${todo.completed ? styles.itemTextCompleted : ""}
+              `}
+            >
+              {todo.title}
+            </span>
+
             <button
               onClick={(e) => {
                 e.stopPropagation();
                 handleDelete(todo.id);
               }}
+              className={styles.deleteButton}
             >
               削除
             </button>
           </li>
         ))}
       </ul>
-      <form onSubmit={handleCreateTodo}>
+      <form onSubmit={handleCreateTodo} className={styles.form}>
         <input
           value={newTitle}
           onChange={(e) => setNewTitle(e.target.value)}
           placeholder="新しいTODOを入力"
+          className={styles.input}
         />
-        <button type="submit">追加</button>
+        <button type="submit" className={styles.addButton}>
+          追加
+        </button>
       </form>
-      {todos.length === 0 && <p>（まだTODOはありません）</p>}
+      {todos.length === 0 && (
+        <p className={styles.emptyMessage}>（まだTODOはありません）</p>
+      )}
     </div>
   );
 };
