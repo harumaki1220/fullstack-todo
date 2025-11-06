@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
+import styles from "./RegisterPage.module.css";
 
 const RegisterPage = () => {
   const [email, setEmail] = useState("");
@@ -27,34 +28,42 @@ const RegisterPage = () => {
   };
 
   return (
-    <div>
-      <h2>新規登録</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="email">Eメール:</label>
-          <input
-            type="email"
-            id="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="password">パスワード:</label>
-          <input
-            type="password"
-            id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </div>
-        <button type="submit">登録する</button>
-      </form>
-      <p>
-        アカウントを既にお持ちですか？ <Link to="/login">ログイン</Link>
-      </p>
+    <div className={styles.container}>
+      <div className={styles.formCard}>
+        <h2>新規登録</h2>
+        <form onSubmit={handleSubmit}>
+          <div className={styles.formGroup}>
+            <label htmlFor="email">Eメール:</label>
+            <input
+              type="email"
+              id="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              className={styles.input}
+            />
+          </div>
+
+          <div className={styles.formGroup}>
+            <label htmlFor="password">パスワード:</label>
+            <input
+              type="password"
+              id="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              className={styles.input}
+            />
+          </div>
+
+          <button type="submit" className={styles.button}>
+            登録する
+          </button>
+        </form>
+        <p className={styles.link}>
+          アカウントを既にお持ちですか？ <Link to="/login">ログイン</Link>
+        </p>
+      </div>
     </div>
   );
 };
