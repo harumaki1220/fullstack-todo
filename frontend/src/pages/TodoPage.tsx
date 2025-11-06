@@ -45,6 +45,13 @@ const TodoPage = () => {
     fetchTodos();
   }, [navigate]);
 
+  const handleLogout = () => {
+    if (!window.confirm("本当にログアウトしますか？")) return;
+
+    localStorage.removeItem("token");
+    navigate("/login");
+  };
+
   const handleCreateTodo = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     if (!newTitle) return;
@@ -112,6 +119,12 @@ const TodoPage = () => {
 
   return (
     <div>
+      <button
+        onClick={handleLogout}
+        style={{ float: "right", backgroundColor: "#ffaaaa" }}
+      >
+        ログアウト
+      </button>
       <h2>あなたのTODOリスト</h2>
       <ul>
         {todos.map((todo) => (
