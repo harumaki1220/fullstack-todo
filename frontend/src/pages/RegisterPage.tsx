@@ -7,7 +7,7 @@ const RegisterPage = () => {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const API_URL = "https://fullstack-todo-hajg.onrender.com";
+  const API_URL = import.meta.env.VITE_API_URL;
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();

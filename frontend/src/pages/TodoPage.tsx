@@ -8,6 +8,8 @@ interface Todo {
   completed: boolean;
 }
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 const TodoPage = () => {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [newTitle, setNewTitle] = useState("");
@@ -22,14 +24,11 @@ const TodoPage = () => {
           return;
         }
 
-        const response = await axios.get(
-          "https://fullstack-todo-hajg.onrender.com/api/todos",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+        const response = await axios.get(`${API_URL}/api/todos`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         setTodos(response.data);
       } catch (error) {
         console.error("TODOリストの取得に失敗:", error);
@@ -64,7 +63,7 @@ const TodoPage = () => {
       }
 
       const response = await axios.post(
-        "https://fullstack-todo-hajg.onrender.com/api/todos",
+        `${API_URL}/api/todos`,
         { title: newTitle },
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -83,7 +82,7 @@ const TodoPage = () => {
       const token = localStorage.getItem("token");
       const newCompletedStatus = !todo.completed;
       const response = await axios.put(
-        `https://fullstack-todo-hajg.onrender.com/api/todos/${todo.id}`,
+        `${API_URL}/api/todos/${todo.id}`,
         {
           title: todo.title,
           completed: newCompletedStatus,
@@ -105,12 +104,9 @@ const TodoPage = () => {
     try {
       const token = localStorage.getItem("token");
 
-      await axios.delete(
-        `https://fullstack-todo-hajg.onrender.com/api/todos/${id}`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      await axios.delete(`${API_URL}/api/todos/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       setTodos((currentTodos) => currentTodos.filter((t) => t.id !== id));
     } catch (error) {
       console.error("削除に失敗", error);
