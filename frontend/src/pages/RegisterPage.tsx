@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import api from "../api";
 import { useNavigate, Link } from "react-router-dom";
 import styles from "./RegisterPage.module.css";
 
@@ -8,12 +9,10 @@ const RegisterPage = () => {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const API_URL = import.meta.env.VITE_API_URL;
-
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
-      await axios.post(`${API_URL}/api/register`, { email, password });
+      await api.post("/api/register", { email, password });
 
       alert("登録が成功しました！ログインページに移動します。");
       navigate("/login");
