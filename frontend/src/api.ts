@@ -25,12 +25,6 @@ api.interceptors.response.use(
     return response;
   },
   (error) => {
-    if (axios.isAxiosError(error) && error.response) {
-      if (error.response.status === 401 || error.response.status === 403) {
-        localStorage.removeItem("token");
-        window.location.href = "/fullstack-todo/#/login";
-      }
-    }
     return Promise.reject(error);
   }
 );
